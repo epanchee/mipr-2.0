@@ -20,7 +20,7 @@ public abstract class ImageRecordWriter<I extends ImageWritable> extends RecordW
 
     protected final TaskAttemptContext taskAttemptContext;
 
-    protected abstract void writeImage(I image, FSDataOutputStream imageFile) throws IOException;
+    protected abstract void writeImage(I image, FSDataOutputStream imageFile) throws Exception;
 
     protected ImageRecordWriter(TaskAttemptContext taskAttemptContext){
         this.taskAttemptContext = taskAttemptContext;
@@ -44,6 +44,8 @@ public abstract class ImageRecordWriter<I extends ImageWritable> extends RecordW
 
                 // Write image to file using ImageIO
                 //ImageIO.write(bufferedImageWritable.getBufferedImage(), bufferedImageWritable.getFormat(), imageFile);
+            } catch (Exception e) {
+                e.printStackTrace();
             } finally {
                 IOUtils.closeStream(imageFile);
             }

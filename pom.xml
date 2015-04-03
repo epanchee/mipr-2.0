@@ -47,7 +47,7 @@
                 </executions>
             </plugin>
 
-            <plugin>
+<!--            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>wagon-maven-plugin</artifactId>
                 <version>1.0-beta-5</version>
@@ -69,15 +69,15 @@
                             <serverId>hadoop.vm</serverId>
                             <url>scp://192.168.56.2</url>
                             <commands>
-                                <!--<command failOnError="false">hadoop jar /root/mipr/mipr/mipr/0.1/mipr-0.1.jar experiments.Img2Gray /user/root/hadoopimg /user/root/grayImg</command>-->
+                                &lt;!&ndash;<command failOnError="false">hadoop jar /root/mipr/mipr/mipr/0.1/mipr-0.1.jar experiments.Img2Gray /user/root/hadoopimg /user/root/grayImg</command>&ndash;&gt;
                                 <command failOnError="false">hadoop jar /root/mipr/mipr/mipr/0.1/mipr-0.1-jar-with-dependencies.jar experiments.Img2Gray_opencv /user/root/singleimg /user/root/grayImgOpenCV</command>
-                                <!--<command failOnError="false">java -cp /root/mipr/mipr/mipr/0.1/mipr-0.1-jar-with-dependencies.jar experiments.Img2Gray_single</command>-->
+                                &lt;!&ndash;<command failOnError="false">java -cp /root/mipr/mipr/mipr/0.1/mipr-0.1-jar-with-dependencies.jar experiments.Img2Gray_single</command>&ndash;&gt;
                             </commands>
                         </configuration>
                     </execution>
 
                 </executions>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -102,28 +102,28 @@
             <artifactId>hadoop-client</artifactId>
             <version>2.0.0-cdh4.6.0</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.opencv</groupId>
             <artifactId>opencv</artifactId>
             <version>2.4.11</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.apache.mrunit</groupId>
             <artifactId>mrunit</artifactId>
             <version>0.9.0-incubating</version>
             <classifier>hadoop1</classifier>
         </dependency>
- <!--       <dependency>
+        <dependency>
             <groupId>nu.pattern</groupId>
             <artifactId>opencv</artifactId>
             <version>2.4.9-7</version>
-        </dependency>-->
+        </dependency>
     </dependencies>
 
     <distributionManagement>
         <repository>
-            <id>hadoop.vm</id>
-            <url>scpexe://192.168.56.2/root/mipr</url>
+            <id>karamba.vm</id>
+            <url>scpexe://192.168.56.101/root/</url>
         </repository>
     </distributionManagement>
 
