@@ -59,6 +59,7 @@ public class Img2Gray_opencv {
 
             if (image != null) {
                 Imgproc.cvtColor(image, result, Imgproc.COLOR_RGB2GRAY);
+//                image.convertTo(result, CvType.CV_8UC1);
             }
 
             context.write(NullWritable.get(), new MatImageWritable(result, value.getFileName(), value.getFormat()));
