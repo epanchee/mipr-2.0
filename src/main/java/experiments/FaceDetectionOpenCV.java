@@ -10,16 +10,15 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
+import org.opencv.core.*;
+import org.opencv.objdetect.CascadeClassifier;
 
 import java.io.IOException;
 
 /**
- * Created by Epanchee on 24.02.15.
+ * Created by Epanchee on 09.04.15.
  */
-public class Img2Gray_opencv {
+public class FaceDetectionOpenCV {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         String input = args[0];
         String output = args[1];
@@ -27,7 +26,7 @@ public class Img2Gray_opencv {
         Configuration conf = new Configuration();
         Job job = new Job(conf);
         job.setJarByClass(Img2Gray.class);
-        job.setMapperClass(Img2Gray_opencvMapper.class);
+        job.setMapperClass(FaceDetectorMapper.class);
         job.setNumReduceTasks(0);
         job.setInputFormatClass(MatImageInputFormat.class);
         job.setOutputFormatClass(MatImageOutputFormat.class);
@@ -39,29 +38,36 @@ public class Img2Gray_opencv {
         outputPath.getFileSystem(conf).delete(outputPath, true); // delete folder if exists
 
         job.waitForCompletion(true);
-
     }
 
-    public static class Img2Gray_opencvMapper extends Mapper<NullWritable, MatImageWritable, NullWritable, MatImageWritable>{
+    public static class FaceDetectorMapper extends Mapper<NullWritable, MatImageWritable, NullWritable, MatImageWritable>{
+
+        @Override
+        protected void map(NullWritable key, MatImageWritable value, Context context) throws IOException, InterruptedException {
+            Mat image = value.getImage();
+
+            if (image != null) {
+                Mat result_image = new Mat(image.height(), image.width(), CvType.CV_8UC3);
+                CascadeClassifier faceDetector = new CascadeClassifier("lbpcascade_frontalface.xml");
+                MatOfRect faceDetections = new MatOfRect();
+                faceDetector.detectMultiScale(image, faceDetections);
+
+                for (Rect rect : faceDetections.toArray()) {
+                    Core.rectangle(result_image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 0, 255), 3);
+                }
+
+                MatImageWritable matiw = new MatImageWritable(result_image);
+
+                matiw.setFormat("jpg");
+                matiw.setFileName(value.getFileName() + "_result");
+                context.write(NullWritable.get(), matiw);
+            }
+        }
 
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
             super.setup(context);
             System.load("/usr/local/share/OpenCV/java/libopencv_java2411.so");
-//            System.load("C:\\Program Files (x86)\\opencv\\build\\java\\x64\\opencv_java2410.dll");
-//            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        }
-
-        @Override
-        protected void map(NullWritable key, MatImageWritable value, Context context) throws IOException, InterruptedException {
-            Mat image = value.getImage();
-            Mat result = new Mat(image.height(), image.width(), CvType.CV_8UC3);
-
-            if (image != null) {
-                Imgproc.cvtColor(image, result, Imgproc.COLOR_RGB2GRAY);
-            }
-
-            context.write(NullWritable.get(), new MatImageWritable(result, value.getFileName(), value.getFormat()));
         }
     }
 }
