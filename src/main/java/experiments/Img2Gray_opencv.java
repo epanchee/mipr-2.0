@@ -26,7 +26,7 @@ public class Img2Gray_opencv {
 
         Configuration conf = new Configuration();
         Job job = new Job(conf);
-        job.setJarByClass(Img2Gray.class);
+        job.setJarByClass(Img2Gray_opencv.class);
         job.setMapperClass(Img2Gray_opencvMapper.class);
         job.setNumReduceTasks(0);
         job.setInputFormatClass(MatImageInputFormat.class);

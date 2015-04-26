@@ -25,7 +25,7 @@ public class FaceDetectionOpenCV {
 
         Configuration conf = new Configuration();
         Job job = new Job(conf);
-        job.setJarByClass(Img2Gray.class);
+        job.setJarByClass(FaceDetectionOpenCV.class);
         job.setMapperClass(FaceDetectorMapper.class);
         job.setNumReduceTasks(0);
         job.setInputFormatClass(MatImageInputFormat.class);

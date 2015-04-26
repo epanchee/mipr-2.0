@@ -15,6 +15,18 @@ import java.io.IOException;
  */
 public class MBFImageWritable extends ImageWritable<MBFImage> {
 
+    public MBFImageWritable(){
+        im = new MBFImage();
+        this.format = "undef";
+        this.fileName = "unnamed";
+    }
+
+    public MBFImageWritable(MBFImage image, String fileName, String format) {
+        im = image;
+        this.fileName = fileName;
+        this.format = format;
+    }
+
     public MBFImage getImage() {
         return im;
     }
