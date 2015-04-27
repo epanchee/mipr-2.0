@@ -4,6 +4,7 @@ import core.formats.MatImage.MatImageInputFormat;
 import core.formats.MatImage.MatImageOutputFormat;
 import core.writables.MatImageWritable;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Job;
@@ -25,6 +26,7 @@ public class Img2Gray_opencv {
         String output = args[1];
 
         Configuration conf = new Configuration();
+        DistributedCache.addCacheFile(new Path("/usr/local/share/OpenCV/java/libopencv_java2411.so").toUri(), conf);
         Job job = new Job(conf);
         job.setJarByClass(Img2Gray_opencv.class);
         job.setMapperClass(Img2Gray_opencvMapper.class);
@@ -46,8 +48,8 @@ public class Img2Gray_opencv {
 
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
-            super.setup(context);
-            System.load("/usr/local/share/OpenCV/java/libopencv_java2411.so");
+            Path[] myCacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
+            System.load(myCacheFiles[0].toUri().getPath());
 //            System.load("C:\\Program Files (x86)\\opencv\\build\\java\\x64\\opencv_java2410.dll");
 //            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         }
