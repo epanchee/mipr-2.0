@@ -1,5 +1,6 @@
 package experiments;
 
+import core.MiprMain;
 import core.formats.MatImage.MatImageInputFormat;
 import core.formats.MatImage.MatImageOutputFormat;
 import core.writables.MatImageWritable;
@@ -26,7 +27,7 @@ public class Img2Gray_opencv {
         String output = args[1];
 
         Configuration conf = new Configuration();
-        DistributedCache.addCacheFile(new Path("/usr/local/share/OpenCV/java/libopencv_java2411.so").toUri(), conf);
+        DistributedCache.addCacheFile(MiprMain.getOpenCVUri(), conf);
         Job job = new Job(conf);
         job.setJarByClass(Img2Gray_opencv.class);
         job.setMapperClass(Img2Gray_opencvMapper.class);
