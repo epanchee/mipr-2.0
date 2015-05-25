@@ -25,7 +25,7 @@ public class MatImageWritable extends ImageWritable<Mat> {
     public MatImageWritable(Mat mat, String fileName, String format) {
         this(mat);
         setFileName(fileName);
-        setFormat(format);
+        setFormat(format.toLowerCase());
     }
 
     public void write(DataOutput out) throws IOException {
