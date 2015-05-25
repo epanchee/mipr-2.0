@@ -2,12 +2,12 @@ package core.recordReaders.MatImage;
 
 import core.recordReaders.ImageRecordReader;
 import core.writables.MatImageWritable;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.hadoop.fs.FSDataInputStream;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.highgui.Highgui;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -16,19 +16,19 @@ import java.io.IOException;
 public class MatImageRecordReader extends ImageRecordReader<MatImageWritable> {
     @Override
     protected MatImageWritable readImage(FSDataInputStream fileStream) throws IOException {
-        Mat out;
-        byte[] data;
-        BufferedImage in = ImageIO.read(fileStream);
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        int nRead;
+        byte[] data = new byte[16384];
 
-        out = new Mat(in.getHeight(), in.getWidth(), CvType.CV_8UC3);
-        data = new byte[in.getWidth() * in.getHeight() * (int) out.elemSize()];
-        int[] dataBuff = in.getRGB(0, 0, in.getWidth(), in.getHeight(), null, 0, in.getWidth());
-        for (int i = 0; i < dataBuff.length; i++) {
-            data[i * 3] = (byte) ((dataBuff[i] >> 16) & 0xFF);
-            data[i * 3 + 1] = (byte) ((dataBuff[i] >> 8) & 0xFF);
-            data[i * 3 + 2] = (byte) ((dataBuff[i] >> 0) & 0xFF);
+        while ((nRead = fileStream.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, nRead);
         }
-        out.put(0, 0, data);
+
+        buffer.flush();
+        byte[] temporaryImageInMemory = buffer.toByteArray();
+        buffer.close();
+
+        Mat out = Highgui.imdecode(new MatOfByte(temporaryImageInMemory), Highgui.IMREAD_ANYCOLOR);
 
         return new MatImageWritable(out);
     }

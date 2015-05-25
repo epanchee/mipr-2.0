@@ -2,12 +2,8 @@ package experiments;
 
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.io.File;
 
 /**
  * Created by Epanchee on 26.02.15.
@@ -33,7 +29,7 @@ public class Img2Gray_single {
             Highgui.imwrite("/root/grayImg/_gray.jpg", result);
 //            Highgui.imwrite("E:\\GitRepos\\mipr-2.0\\src\\main\\resources\\_gray.jpg", result);*/
 
-            try {
+/*            try {
                 File input = new File("/root/mipr/best.jpg");
                 BufferedImage image = ImageIO.read(input);
 
@@ -54,7 +50,14 @@ public class Img2Gray_single {
 
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
-            }
+            }*/
+
+            Mat mat = Highgui.imread("/root/mipr/best.jpg");
+
+            Mat mat1 = new Mat(mat.height(),mat.width(), CvType.CV_8UC1);
+            Imgproc.cvtColor(mat, mat1, Imgproc.COLOR_RGB2GRAY);
+
+            Highgui.imwrite("/root/grayImg/_gray.jpg", mat1);
 
         }
 
