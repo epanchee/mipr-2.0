@@ -1,9 +1,11 @@
 package experiments;
 
+import core.MiprMain;
 import core.formats.MatImage.MatImageInputFormat;
 import core.formats.MatImage.MatImageOutputFormat;
 import core.writables.MatImageWritable;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Job;
@@ -24,6 +26,7 @@ public class FaceDetectionOpenCV {
         String output = args[1];
 
         Configuration conf = new Configuration();
+        DistributedCache.addCacheFile(MiprMain.getOpenCVUri(), conf);
         Job job = new Job(conf);
         job.setJarByClass(FaceDetectionOpenCV.class);
         job.setMapperClass(FaceDetectorMapper.class);
@@ -47,16 +50,16 @@ public class FaceDetectionOpenCV {
             Mat image = value.getImage();
 
             if (image != null) {
-                Mat result_image = new Mat(image.height(), image.width(), CvType.CV_8UC3);
+                //Mat result_image = new Mat(image.height(), image.width(), CvType.CV_8UC3);
                 CascadeClassifier faceDetector = new CascadeClassifier("lbpcascade_frontalface.xml");
                 MatOfRect faceDetections = new MatOfRect();
                 faceDetector.detectMultiScale(image, faceDetections);
 
                 for (Rect rect : faceDetections.toArray()) {
-                    Core.rectangle(result_image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 0, 255), 3);
+                    Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 0, 255), 3);
                 }
 
-                MatImageWritable matiw = new MatImageWritable(result_image);
+                MatImageWritable matiw = new MatImageWritable(image);
 
                 matiw.setFormat("jpg");
                 matiw.setFileName(value.getFileName() + "_result");
@@ -66,8 +69,8 @@ public class FaceDetectionOpenCV {
 
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
-            super.setup(context);
-            System.load("/usr/local/share/OpenCV/java/libopencv_java2411.so");
+            Path[] myCacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
+            System.load(myCacheFiles[0].toUri().getPath());
         }
     }
 }
