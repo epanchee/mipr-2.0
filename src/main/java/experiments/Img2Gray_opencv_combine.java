@@ -51,8 +51,6 @@ public class Img2Gray_opencv_combine {
         protected void setup(Context context) throws IOException, InterruptedException {
             Path[] myCacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
             System.load(myCacheFiles[0].toUri().getPath());
-//            System.load("C:\\Program Files (x86)\\opencv\\build\\java\\x64\\opencv_java2410.dll");
-//            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         }
 
         @Override
