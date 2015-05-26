@@ -1,7 +1,7 @@
 package experiments;
 
 import core.MiprMain;
-import core.formats.MatImage.MatImageInputFormat;
+import core.formats.MatImage.CombineMatImageInputFormat;
 import core.formats.MatImage.MatImageOutputFormat;
 import core.writables.MatImageWritable;
 import org.apache.hadoop.conf.Configuration;
@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * Created by Epanchee on 24.02.15.
  */
-public class Img2Gray_opencv {
+public class Img2Gray_opencv_combine {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         String input = args[0];
         String output = args[1];
@@ -29,11 +29,10 @@ public class Img2Gray_opencv {
         Configuration conf = new Configuration();
         DistributedCache.addCacheFile(MiprMain.getOpenCVUri(), conf);
         Job job = new Job(conf);
-        job.setJarByClass(Img2Gray_opencv.class);
+        job.setJarByClass(Img2Gray_opencv_combine.class);
         job.setMapperClass(Img2Gray_opencvMapper.class);
         job.setNumReduceTasks(0);
-//        job.setInputFormatClass(CombineMatImageInputFormat.class);
-        job.setInputFormatClass(MatImageInputFormat.class);
+        job.setInputFormatClass(CombineMatImageInputFormat.class);
         job.setOutputFormatClass(MatImageOutputFormat.class);
         Path outputPath = new Path(output);
         FileInputFormat.setInputPaths(job, input);
