@@ -9,11 +9,10 @@ import java.net.URI;
  */
 public class MiprMain {
 
-    public static final String workspace = "/user/u1220/";
+    public static final String workspace = "";
 
     public static URI getOpenCVUri(){
-//        return new Path(workspace + "/usr/local/share/OpenCV/java/libopencv_java2411.so").toUri();
-        return new Path(workspace + "/lib/libopencv_java2411.so").toUri();
+        return new Path(workspace + "/usr/local/share/OpenCV/java/libopencv_java2411.so").toUri();
     }
 
 }
