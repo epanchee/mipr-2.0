@@ -18,8 +18,8 @@ import java.io.IOException;
  */
 public abstract class ImageRecordReader<I extends ImageWritable> extends RecordReader<NullWritable, I>{
 
-    private String fileName;
-    private FSDataInputStream fileStream;
+    protected String fileName;
+    protected FSDataInputStream fileStream;
     protected boolean processed = false;
     private I im;
 

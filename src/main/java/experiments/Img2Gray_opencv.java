@@ -1,7 +1,7 @@
 package experiments;
 
 import core.MiprMain;
-import core.formats.MatImage.MatImageInputFormat;
+import core.formats.MatImage.CombineMatImageInputFormat;
 import core.formats.MatImage.MatImageOutputFormat;
 import core.writables.MatImageWritable;
 import org.apache.hadoop.conf.Configuration;
@@ -32,7 +32,8 @@ public class Img2Gray_opencv {
         job.setJarByClass(Img2Gray_opencv.class);
         job.setMapperClass(Img2Gray_opencvMapper.class);
         job.setNumReduceTasks(0);
-        job.setInputFormatClass(MatImageInputFormat.class);
+        job.setInputFormatClass(CombineMatImageInputFormat.class);
+//        job.setInputFormatClass(MatImageInputFormat.class);
         job.setOutputFormatClass(MatImageOutputFormat.class);
         Path outputPath = new Path(output);
         FileInputFormat.setInputPaths(job, input);
