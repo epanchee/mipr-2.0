@@ -2,3 +2,4 @@
 *.iml
 .idea
 target
+src/main/java/core/MiprMain.java
