@@ -50,7 +50,6 @@ public class FaceDetectionOpenCV {
             Mat image = value.getImage();
 
             if (image != null) {
-                //Mat result_image = new Mat(image.height(), image.width(), CvType.CV_8UC3);
                 CascadeClassifier faceDetector = new CascadeClassifier("lbpcascade_frontalface.xml");
                 MatOfRect faceDetections = new MatOfRect();
                 faceDetector.detectMultiScale(image, faceDetections);
