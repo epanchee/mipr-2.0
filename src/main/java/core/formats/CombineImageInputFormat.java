@@ -10,7 +10,7 @@ import org.apache.hadoop.mapreduce.lib.input.CombineFileInputFormat;
 public abstract class CombineImageInputFormat<K,V> extends CombineFileInputFormat {
     @Override
     protected void setMaxSplitSize(long maxSplitSize) {
-        super.setMaxSplitSize(67108864);
+        super.setMaxSplitSize(134217728);
     }
 
     @Override

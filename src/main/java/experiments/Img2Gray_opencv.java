@@ -32,7 +32,6 @@ public class Img2Gray_opencv {
         job.setJarByClass(Img2Gray_opencv.class);
         job.setMapperClass(Img2Gray_opencvMapper.class);
         job.setNumReduceTasks(0);
-//        job.setInputFormatClass(CombineMatImageInputFormat.class);
         job.setInputFormatClass(MatImageInputFormat.class);
         job.setOutputFormatClass(MatImageOutputFormat.class);
         Path outputPath = new Path(output);
