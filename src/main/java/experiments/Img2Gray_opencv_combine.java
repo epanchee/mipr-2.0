@@ -27,7 +27,6 @@ public class Img2Gray_opencv_combine {
         String output = args[1];
 
         Configuration conf = new Configuration();
-        conf.set("mapred.child.java.opts", "-Xmx1250m");
         DistributedCache.addCacheFile(MiprMain.getOpenCVUri(), conf);
         Job job = new Job(conf);
         job.setJarByClass(Img2Gray_opencv_combine.class);
