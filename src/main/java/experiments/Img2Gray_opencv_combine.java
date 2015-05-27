@@ -28,6 +28,7 @@ public class Img2Gray_opencv_combine {
 
         Configuration conf = new Configuration();
         DistributedCache.addCacheFile(MiprMain.getOpenCVUri(), conf);
+        conf.set("mapreduce.map.memory.mb", "3000");
         Job job = new Job(conf);
         job.setJarByClass(Img2Gray_opencv_combine.class);
         job.setMapperClass(Img2Gray_opencvMapper.class);

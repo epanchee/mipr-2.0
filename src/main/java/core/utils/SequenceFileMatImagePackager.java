@@ -9,6 +9,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
@@ -31,6 +32,7 @@ public class SequenceFileMatImagePackager {
         Job job = new Job(conf);
         job.setJarByClass(SequenceFileMatImagePackager.class);
         job.setMapperClass(SequenceFileMatImagePackagerMapper.class);
+        job.setReducerClass(SequenceFileMatImagePackagerReducer.class);
         job.setNumReduceTasks(3); // count of resulted seq files
         job.setInputFormatClass(CombineMatImageInputFormat.class);
         job.setOutputFormatClass(SequenceFileOutputFormat.class); // that is all
@@ -46,6 +48,14 @@ public class SequenceFileMatImagePackager {
     }
 
     static class SequenceFileMatImagePackagerMapper extends Mapper<NullWritable, MatImageWritable, NullWritable, MatImageWritable>{
+        @Override
+        protected void setup(Context context) throws IOException, InterruptedException {
+            Path[] myCacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
+            System.load(myCacheFiles[0].toUri().getPath());
+        }
+    }
+
+    static class SequenceFileMatImagePackagerReducer extends Reducer<NullWritable, MatImageWritable, NullWritable, MatImageWritable>{
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
             Path[] myCacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
