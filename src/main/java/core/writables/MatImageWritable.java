@@ -1,6 +1,5 @@
 package core.writables;
 
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
 import java.io.DataInput;
@@ -39,6 +38,8 @@ public class MatImageWritable extends ImageWritable<Mat> {
         out.writeInt(im.width());
         // Write Mat image height
         out.writeInt(im.height());
+        // Write image type
+        out.writeInt(im.type());
         // Write image bytes
         out.write(byteArray);
     }
@@ -51,10 +52,12 @@ public class MatImageWritable extends ImageWritable<Mat> {
         int mWidth = in.readInt();
         // Read Mat image height
         int mHeight = in.readInt();
+        // Read Mat image type
+        int type = in.readInt();
         // Read image byte array
         byte[] bArray = new byte[(int) (arraySize)];
         in.readFully(bArray);
-        this.im = new Mat(mHeight, mWidth, CvType.CV_8UC3);
+        this.im = new Mat(mHeight, mWidth, type);
         // Read image from byte array
         this.im.put(0, 0, bArray);
     }
