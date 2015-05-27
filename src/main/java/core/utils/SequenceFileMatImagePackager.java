@@ -26,10 +26,12 @@ public class SequenceFileMatImagePackager {
 
         Configuration conf = new Configuration();
         DistributedCache.addCacheFile(MiprMain.getOpenCVUri(), conf);
+        conf.set("mapreduce.map.memory.mb", "4096");
+        conf.set("mapreduce.reduce.memory.mb", "4096");
         Job job = new Job(conf);
         job.setJarByClass(SequenceFileMatImagePackager.class);
         job.setMapperClass(SequenceFileMatImagePackagerMapper.class);
-        job.setNumReduceTasks(3); // count of result seq files
+        job.setNumReduceTasks(3); // count of resulted seq files
         job.setInputFormatClass(CombineMatImageInputFormat.class);
         job.setOutputFormatClass(SequenceFileOutputFormat.class); // that is all
         Path outputPath = new Path(output);
