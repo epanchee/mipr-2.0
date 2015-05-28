@@ -1,8 +1,8 @@
 package core.formats.BufferedImage;
 
-import main.java.core.formats.ImageInputFormat;
-import main.java.core.recordReaders.BufferedImage.BufferedImageRecordReader;
-import main.java.core.writables.BufferedImageWritable;
+import core.formats.ImageInputFormat;
+import core.recordReaders.BufferedImage.BufferedImageRecordReader;
+import core.writables.BufferedImageWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.RecordReader;

@@ -1,6 +1,6 @@
 package core.recordReaders;
 
-import main.java.core.writables.ImageWritable;
+import core.writables.ImageWritable;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;

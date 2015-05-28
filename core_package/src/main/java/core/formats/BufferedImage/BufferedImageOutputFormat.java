@@ -1,7 +1,7 @@
 package core.formats.BufferedImage;
 
-import main.java.core.recordReaders.BufferedImage.BufferedImageRecordWriter;
-import main.java.core.writables.BufferedImageWritable;
+import core.recordReaders.BufferedImage.BufferedImageRecordWriter;
+import core.writables.BufferedImageWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.RecordWriter;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;

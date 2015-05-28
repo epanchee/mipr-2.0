@@ -1,7 +1,7 @@
 package core.recordReaders.BufferedImage;
 
-import main.java.core.recordReaders.ImageRecordReader;
-import main.java.core.writables.BufferedImageWritable;
+import core.recordReaders.ImageRecordReader;
+import core.writables.BufferedImageWritable;
 import org.apache.hadoop.fs.FSDataInputStream;
 
 import javax.imageio.ImageIO;
