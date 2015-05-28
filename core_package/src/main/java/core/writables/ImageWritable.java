@@ -1,4 +1,4 @@
-package main.java.core.writables;
+package core.writables;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;

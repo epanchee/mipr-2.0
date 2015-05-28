@@ -1,4 +1,4 @@
-package main.java.core.formats.BufferedImage;
+package core.formats.BufferedImage;
 
 import main.java.core.formats.ImageInputFormat;
 import main.java.core.recordReaders.BufferedImage.BufferedImageRecordReader;

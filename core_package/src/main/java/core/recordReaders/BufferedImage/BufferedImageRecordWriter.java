@@ -1,4 +1,4 @@
-package main.java.core.recordReaders.BufferedImage;
+package core.recordReaders.BufferedImage;
 
 import main.java.core.recordReaders.ImageRecordWriter;
 import main.java.core.writables.BufferedImageWritable;

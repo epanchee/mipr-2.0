@@ -1,4 +1,6 @@
-package main.java.core.writables;
+package core.writables;
+
+import main.java.core.writables.ImageWritable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
