@@ -1,6 +1,6 @@
 package experiments;
 
-import main.java.core.MiprMain;
+import core.MiprMain;
 import opencv.MatImageInputFormat;
 import opencv.MatImageOutputFormat;
 import opencv.MatImageWritable;
