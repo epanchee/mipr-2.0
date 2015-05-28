@@ -1,6 +1,6 @@
 package opencv;
 
-import main.java.core.recordReaders.ImageRecordWriter;
+import core.recordReaders.ImageRecordWriter;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.opencv.core.MatOfByte;

@@ -1,6 +1,6 @@
 package openimaj;
 
-import main.java.core.writables.ImageWritable;
+import core.writables.ImageWritable;
 import org.openimaj.image.MBFImage;
 
 import java.io.DataInput;

@@ -1,6 +1,6 @@
 package opencv;
 
-import main.java.core.formats.ImageInputFormat;
+import core.formats.ImageInputFormat;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.RecordReader;

@@ -1,6 +1,6 @@
 package openimaj;
 
-import main.java.core.recordReaders.ImageRecordReader;
+import core.recordReaders.ImageRecordReader;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;

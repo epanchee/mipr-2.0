@@ -1,6 +1,6 @@
 package utils;
 
-import main.java.core.MiprMain;
+import core.MiprMain;
 import opencv.CombineMatImageInputFormat;
 import opencv.MatImageWritable;
 import org.apache.hadoop.conf.Configuration;

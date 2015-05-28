@@ -1,6 +1,6 @@
 package opencv;
 
-import main.java.core.recordReaders.ImageRecordReader;
+import core.recordReaders.ImageRecordReader;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.opencv.core.Mat;

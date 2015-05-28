@@ -1,6 +1,6 @@
 package opencv;
 
-import main.java.core.writables.ImageWritable;
+import core.writables.ImageWritable;
 import org.opencv.core.Mat;
 
 import java.io.DataInput;
