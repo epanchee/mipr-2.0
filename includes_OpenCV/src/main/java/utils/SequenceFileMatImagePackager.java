@@ -33,7 +33,7 @@ public class SequenceFileMatImagePackager {
         job.setJarByClass(SequenceFileMatImagePackager.class);
         job.setMapperClass(SequenceFileMatImagePackagerMapper.class);
         job.setReducerClass(SequenceFileMatImagePackagerReducer.class);
-//        job.setNumReduceTasks(3); // count of resulted seq files
+        job.setNumReduceTasks(1); // count of resulted seq files
         job.setInputFormatClass(CombineMatImageInputFormat.class);
         job.setOutputFormatClass(SequenceFileOutputFormat.class); // that is all
         Path outputPath = new Path(output);

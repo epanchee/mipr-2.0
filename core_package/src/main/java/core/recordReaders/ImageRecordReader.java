@@ -1,4 +1,4 @@
-package main.java.core.recordReaders;
+package core.recordReaders;
 
 import main.java.core.writables.ImageWritable;
 import org.apache.hadoop.conf.Configuration;
