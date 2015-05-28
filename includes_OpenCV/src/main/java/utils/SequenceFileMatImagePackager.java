@@ -56,7 +56,7 @@ public class SequenceFileMatImagePackager {
     }
 
     static class SequenceFileMatImagePackagerReducer extends Reducer<NullWritable, MatImageWritable, NullWritable, MatImageWritable> {
-        protected void setup(Mapper.Context context) throws IOException, InterruptedException {
+        protected void setup(Context context) throws IOException, InterruptedException {
             Path[] myCacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
             System.load(myCacheFiles[0].toUri().getPath());
         }
