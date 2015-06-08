@@ -7,6 +7,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -45,7 +46,7 @@ public class Img2Gray_opencv_seqfiles {
 
     }
 
-    public static class Img2Gray_opencvMapper extends Mapper<NullWritable, MatImageWritable, NullWritable, MatImageWritable>{
+    public static class Img2Gray_opencvMapper extends Mapper<Text, MatImageWritable, NullWritable, MatImageWritable>{
 
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
@@ -54,7 +55,7 @@ public class Img2Gray_opencv_seqfiles {
         }
 
         @Override
-        protected void map(NullWritable key, MatImageWritable value, Context context) throws IOException, InterruptedException {
+        protected void map(Text key, MatImageWritable value, Context context) throws IOException, InterruptedException {
             Mat image = value.getImage();
             Mat result = new Mat(image.height(), image.width(), CvType.CV_8UC3);
 
