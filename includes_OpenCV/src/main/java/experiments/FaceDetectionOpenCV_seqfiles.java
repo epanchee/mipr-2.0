@@ -44,10 +44,10 @@ public class FaceDetectionOpenCV_seqfiles {
         job.waitForCompletion(true);
     }
 
-    public static class FaceDetectorMapper extends Mapper<NullWritable, MatImageWritable, Text, MatImageWritable>{
+    public static class FaceDetectorMapper extends Mapper<Text, MatImageWritable, NullWritable, MatImageWritable>{
 
         @Override
-        protected void map(NullWritable key, MatImageWritable value, Context context) throws IOException, InterruptedException {
+        protected void map(Text key, MatImageWritable value, Context context) throws IOException, InterruptedException {
             Mat image = value.getImage();
 
             if (image != null) {
@@ -63,7 +63,7 @@ public class FaceDetectionOpenCV_seqfiles {
 
                 matiw.setFormat("jpg");
                 matiw.setFileName(value.getFileName() + "_result");
-                context.write(new Text(value.getFileName()), matiw);
+                context.write(NullWritable.get(), matiw);
             }
         }
 
