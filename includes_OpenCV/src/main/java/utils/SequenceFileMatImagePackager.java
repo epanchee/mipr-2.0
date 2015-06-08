@@ -7,6 +7,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -33,13 +34,13 @@ public class SequenceFileMatImagePackager {
         job.setJarByClass(SequenceFileMatImagePackager.class);
         job.setMapperClass(SequenceFileMatImagePackagerMapper.class);
         job.setReducerClass(SequenceFileMatImagePackagerReducer.class);
-        job.setNumReduceTasks(1); // count of resulted seq files
+        job.setNumReduceTasks(3); // count of resulted seq files
         job.setInputFormatClass(CombineMatImageInputFormat.class);
         job.setOutputFormatClass(SequenceFileOutputFormat.class); // that is all
         Path outputPath = new Path(output);
         FileInputFormat.setInputPaths(job, input);
         FileOutputFormat.setOutputPath(job, outputPath);
-        job.setOutputKeyClass(NullWritable.class);
+        job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(MatImageWritable.class);
         outputPath.getFileSystem(conf).delete(outputPath, true); // delete folder if exists
 
@@ -47,15 +48,20 @@ public class SequenceFileMatImagePackager {
 
     }
 
-    static class SequenceFileMatImagePackagerMapper extends Mapper<NullWritable, MatImageWritable, NullWritable, MatImageWritable>{
+    static class SequenceFileMatImagePackagerMapper extends Mapper<NullWritable, MatImageWritable, Text, MatImageWritable>{
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
             Path[] myCacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
             System.load(myCacheFiles[0].toUri().getPath());
         }
+
+        @Override
+        protected void map(NullWritable key, MatImageWritable value, Context context) throws IOException, InterruptedException {
+            context.write(new Text(value.getFileName()), value);
+        }
     }
 
-    static class SequenceFileMatImagePackagerReducer extends Reducer<NullWritable, MatImageWritable, NullWritable, MatImageWritable> {
+    static class SequenceFileMatImagePackagerReducer extends Reducer<Text, MatImageWritable, Text, MatImageWritable> {
         protected void setup(Context context) throws IOException, InterruptedException {
             Path[] myCacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
             System.load(myCacheFiles[0].toUri().getPath());
