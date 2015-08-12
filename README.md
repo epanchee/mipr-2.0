@@ -72,3 +72,23 @@ For now, MIPr already has this class wihch placed in *core_package\src\main\java
             System.exit(res);
         }
     ```
+
+2. Create **run** method and mark it as @Override.
+
+    ```java
+    @Override
+    public int run(String[] args) throws Exception {
+        Job job  = Job.getInstance(getConf(), "Img2Gray job"); // name of your job. It needs for logs.
+        job.setJarByClass(this.getClass());
+        FileInputFormat.addInputPaths(job, String.valueOf(new Path(args[0]))); // input folder
+        FileOutputFormat.setOutputPath(job, new Path(args[1])); // output folder. Must not exists before the start!
+        job.setNumReduceTasks(0); // In our case we don't need Reduce phase
+        job.setInputFormatClass(BufferedImageInputFormat.class);
+        job.setOutputFormatClass(BufferedImageOutputFormat.class);
+        job.setMapperClass(Img2GrayMapper.class);
+        job.setOutputKeyClass(NullWritable.class);
+        job.setOutputValueClass(BufferedImageWritable.class);
+
+        return job.waitForCompletion(true) ? 0 : 1;
+    }
+    ```
