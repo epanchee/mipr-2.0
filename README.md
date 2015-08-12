@@ -98,12 +98,12 @@ For now, MIPr already has this class wihch placed in *core_package\src\main\java
         - job.setInputFormatClass([InputFormat].class)
         Where [InputFormat] one of the followings:
             * Java 2D
-                BufferedImageInputFormat
+                *BufferedImageInputFormat*
             * OpenIMAJ
-                MBFImageInputFormat
+                *MBFImageInputFormat*
             * OpenCV
-                MatImageInputFormat
-                CombineMatImageInputFormat
+                *MatImageInputFormat*
+                *CombineMatImageInputFormat*
         - job.setOutputFormatClass()
         - job.setMapperClass()
         - job.setOutputKeyClass()
