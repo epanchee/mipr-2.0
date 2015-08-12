@@ -161,4 +161,4 @@ For now, MIPr already has this class wihch placed in *core_package\src\main\java
         }
     ```
 
-4. Return to [Running section](#running) and build package including your own hadoop-job.
+4. Return to **running section** and build package including your own hadoop-job.
