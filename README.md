@@ -107,6 +107,7 @@ For now, MIPr already has this class wihch placed in *core_package\src\main\java
       * OpenCV
 
         *MatImageInputFormat*
+
         *CombineMatImageInputFormat*
 
     - job.setOutputFormatClass()
