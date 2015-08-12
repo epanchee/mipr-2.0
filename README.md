@@ -61,7 +61,7 @@ MIPr includes:
 ### Creating your own Hadoop job
 
 To process images by your own way you need to create 1 class. For example, lets create job, which processes color images to grayscale.
-For now, MIPr already has this class wihch placed in *core_package\src\main\java\experiments*.
+For now, MIPr already has this class wihch placed in *core_package\src\main\java\experiments\Img2Gray*.
 
 1. Create public class inhereted from **Configured** superclass and **Tool** interface.
 
@@ -73,7 +73,7 @@ For now, MIPr already has this class wihch placed in *core_package\src\main\java
         }
     ```
 
-2. Create **run** method and mark it as @Override.
+2. Create **run** method inside your class and mark it as @Override. Fill it according library you will use.
 
     ```java
     @Override
@@ -92,3 +92,18 @@ For now, MIPr already has this class wihch placed in *core_package\src\main\java
         return job.waitForCompletion(true) ? 0 : 1;
     }
     ```
+
+    Most important configurations are:
+        - job.setInputFormatClass([InputFormat].class)
+        Where [InputFormat] one of the followings:
+            * Java 2D
+                BufferedImageInputFormat
+            * OpenIMAJ
+                MBFImageInputFormat
+            * OpenCV
+                MatImageInputFormat
+                CombineMatImageInputFormat
+        - job.setOutputFormatClass()
+        - job.setMapperClass()
+        - job.setOutputKeyClass()
+        - job.setOutputValueClass()
