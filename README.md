@@ -97,7 +97,7 @@ For now, MIPr already has this class wihch placed in *core_package\src\main\java
 
     - job.setInputFormatClass([InputFormat].class)
 
-      Where [InputFormat] one of the followings:
+      Where [InputFormat] one of the following:
 
       * Java 2D
 
@@ -110,8 +110,28 @@ For now, MIPr already has this class wihch placed in *core_package\src\main\java
         *MatImageInputFormat*
 
         *CombineMatImageInputFormat*
+    - job.setOutputFormatClass([OutputFormat].class)
 
-    - job.setOutputFormatClass()
-    - job.setMapperClass()
-    - job.setOutputKeyClass()
-    - job.setOutputValueClass()
+       Where [OutputFormat] is similar to [InputFormat]
+
+    - job.setMapperClass([MapperClass].class)
+
+        Where [MapperClass] is your implemented MapperClass which contains map-method.
+
+    - job.setOutputKeyClass(NullWritable.class)
+
+        In most cases of image processing Key class doesn't necessary. You can leave it by using special NullWritable hadoop-class which contains nothing.
+
+    - job.setOutputValueClass([Value].class)
+
+        [Value] depends on which library you are going to use.
+
+      * Java 2D
+
+        *BufferedImageWritable*
+      * OpenIMAJ
+
+        *MBFImageWritable*
+      * OpenCV
+
+        *MatImageWritable*
