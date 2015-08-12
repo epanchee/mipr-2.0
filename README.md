@@ -101,22 +101,22 @@ For now, MIPr already has this class wihch placed in *core_package\src\main\java
 
       * Java 2D
 
-        *BufferedImageInputFormat*
+        **BufferedImageInputFormat**
       * OpenIMAJ
 
-        *MBFImageInputFormat*
+        **MBFImageInputFormat**
       * OpenCV
 
-        *MatImageInputFormat*
+        **MatImageInputFormat**
 
-        *CombineMatImageInputFormat*
+        **CombineMatImageInputFormat**
     - job.setOutputFormatClass([OutputFormat].class)
 
        Where [OutputFormat] is similar to [InputFormat]
 
     - job.setMapperClass([MapperClass].class)
 
-        Where [MapperClass] is your implemented MapperClass which contains map-method.
+        Where [MapperClass] is your implemented Mapper class which contains map-method.
 
     - job.setOutputKeyClass(NullWritable.class)
 
@@ -128,10 +128,37 @@ For now, MIPr already has this class wihch placed in *core_package\src\main\java
 
       * Java 2D
 
-        *BufferedImageWritable*
+        **BufferedImageWritable**
       * OpenIMAJ
 
-        *MBFImageWritable*
+        **MBFImageWritable**
       * OpenCV
 
-        *MatImageWritable*
+        **MatImageWritable**
+
+3. Create Mapper class with image processing algorithm.
+
+    ```java
+        public static class Img2GrayMapper extends Mapper<NullWritable, BufferedImageWritable, NullWritable, BufferedImageWritable> {
+
+            private Graphics g;
+            private BufferedImage grayImage;
+
+            @Override
+            protected void map(NullWritable key, BufferedImageWritable value, Context context) throws IOException, InterruptedException {
+                BufferedImage colorImage = value.getImage();
+
+                if (colorImage != null) {
+                    grayImage = new BufferedImage(colorImage.getWidth(), colorImage.getHeight(),
+                            BufferedImage.TYPE_BYTE_GRAY);
+                    g = grayImage.getGraphics();
+                    g.drawImage(colorImage, 0, 0, null);
+                    g.dispose();
+                    BufferedImageWritable biw = new BufferedImageWritable(grayImage, value.getFileName(), value.getFormat());
+                    context.write(NullWritable.get(), biw);
+                }
+            }
+        }
+    ```
+
+4. Return to [Running section](#Running) and build package including your own hadoop-job.
