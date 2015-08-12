@@ -96,6 +96,7 @@ For now, MIPr already has this class wihch placed in *core_package\src\main\java
     Most important configurations are:
 
     - job.setInputFormatClass([InputFormat].class)
+
       Where [InputFormat] one of the followings:
 
       * Java 2D
