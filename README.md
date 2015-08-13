@@ -60,34 +60,36 @@ MIPr includes:
 
 ### Creating your own Hadoop job
 
-To process images by your own way you need to create 1 class. For example, lets create job, which processes color images to grayscale.
-For now, MIPr already has this class wihch placed in *core_package\src\main\java\experiments\Img2Gray*.
+To process images by your own way you need to create one class. For example, lets create job, which processes color images to grayscale by using OpenCV.
+For now, MIPr already has this class which placed in *includes_OpenCV\src\main\java\experiments\Img2Gray_opencv*.
 
-1. Create public class inhereted from **Configured** superclass and **Tool** interface.
+1. Create public class inherited from **Configured** superclass and **Tool** interface.
 
     ```java
-    public class Img2Gray extends Configured implements Tool{
+    public class Img2Gray_opencv extends Configured implements Tool{
         public static void main(String[] args) throws Exception {
             int res  = ToolRunner.run(new Img2Gray(), args);
             System.exit(res);
         }
     ```
 
-2. Create **run** method inside your class and mark it as @Override. Fill it according library you will use.
+2. Create **run** method inside your class. Fill it regarding library you will use.
 
     ```java
-    @Override
     public int run(String[] args) throws Exception {
-        Job job  = Job.getInstance(getConf(), "Img2Gray job"); // name of your job. It needs for logs.
-        job.setJarByClass(this.getClass());
-        FileInputFormat.addInputPaths(job, String.valueOf(new Path(args[0]))); // input folder
-        FileOutputFormat.setOutputPath(job, new Path(args[1])); // output folder. Must not exists before the start!
-        job.setNumReduceTasks(0); // In our case we don't need Reduce phase
-        job.setInputFormatClass(BufferedImageInputFormat.class);
-        job.setOutputFormatClass(BufferedImageOutputFormat.class);
-        job.setMapperClass(Img2GrayMapper.class);
+        String input = args[0];
+        String output = args[1];
+
+        Job job = MiprMain.getOpenCVJobTemplate();
+        job.setJarByClass(Img2Gray_opencv.class);
+        job.setMapperClass(Img2Gray_opencvMapper.class);
+        job.setInputFormatClass(MatImageInputFormat.class);
+        job.setOutputFormatClass(MatImageOutputFormat.class);
+        Path outputPath = new Path(output);
+        FileInputFormat.setInputPaths(job, input);
+        FileOutputFormat.setOutputPath(job, outputPath);
         job.setOutputKeyClass(NullWritable.class);
-        job.setOutputValueClass(BufferedImageWritable.class);
+        job.setOutputValueClass(MatImageWritable.class);
 
         return job.waitForCompletion(true) ? 0 : 1;
     }
@@ -136,27 +138,19 @@ For now, MIPr already has this class wihch placed in *core_package\src\main\java
 
         **MatImageWritable**
 
-3. Create Mapper class with image processing algorithm.
+3. Create Mapper class. Your class should extend OpenCVMapper superclass to make available usage of OpenCV library in parallel mode. Method **map** contains image processing algorithm.
 
     ```java
-        public static class Img2GrayMapper extends Mapper<NullWritable, BufferedImageWritable, NullWritable, BufferedImageWritable> {
+        public static class Img2Gray_opencvMapper extends OpenCVMapper<NullWritable, MatImageWritable, NullWritable, MatImageWritable>{
+            protected void map(NullWritable key, MatImageWritable value, Context context) throws IOException, InterruptedException {
+                Mat image = value.getImage();
+                Mat result = new Mat(image.height(), image.width(), CvType.CV_8UC3);
 
-            private Graphics g;
-            private BufferedImage grayImage;
+                if (image.type() == CvType.CV_8UC3) {
+                    Imgproc.cvtColor(image, result, Imgproc.COLOR_RGB2GRAY);
+                } else result = image;
 
-            @Override
-            protected void map(NullWritable key, BufferedImageWritable value, Context context) throws IOException, InterruptedException {
-                BufferedImage colorImage = value.getImage();
-
-                if (colorImage != null) {
-                    grayImage = new BufferedImage(colorImage.getWidth(), colorImage.getHeight(),
-                            BufferedImage.TYPE_BYTE_GRAY);
-                    g = grayImage.getGraphics();
-                    g.drawImage(colorImage, 0, 0, null);
-                    g.dispose();
-                    BufferedImageWritable biw = new BufferedImageWritable(grayImage, value.getFileName(), value.getFormat());
-                    context.write(NullWritable.get(), biw);
-                }
+                context.write(NullWritable.get(), new MatImageWritable(result, value.getFileName(), value.getFormat()));
             }
         }
     ```
