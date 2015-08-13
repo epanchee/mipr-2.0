@@ -4,12 +4,10 @@ import core.MiprMain;
 import opencv.CombineMatImageInputFormat;
 import opencv.MatImageOutputFormat;
 import opencv.MatImageWritable;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.filecache.DistributedCache;
+import opencv.OpenCVMapper;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.opencv.core.CvType;
@@ -26,13 +24,9 @@ public class Img2Gray_opencv_combine {
         String input = args[0];
         String output = args[1];
 
-        Configuration conf = new Configuration();
-        DistributedCache.addCacheFile(MiprMain.getOpenCVUri(), conf);
-        conf.set("mapreduce.map.memory.mb", "1250");
-        Job job = new Job(conf);
+        Job job = MiprMain.getOpenCVJobTemplate();
         job.setJarByClass(Img2Gray_opencv_combine.class);
         job.setMapperClass(Img2Gray_opencvMapper.class);
-        job.setNumReduceTasks(0);
         job.setInputFormatClass(CombineMatImageInputFormat.class);
         job.setOutputFormatClass(MatImageOutputFormat.class);
         Path outputPath = new Path(output);
@@ -40,19 +34,12 @@ public class Img2Gray_opencv_combine {
         FileOutputFormat.setOutputPath(job, outputPath);
         job.setOutputKeyClass(NullWritable.class);
         job.setOutputValueClass(MatImageWritable.class);
-        outputPath.getFileSystem(conf).delete(outputPath, true); // delete folder if exists
 
         job.waitForCompletion(true);
 
     }
 
-    public static class Img2Gray_opencvMapper extends Mapper<NullWritable, MatImageWritable, NullWritable, MatImageWritable>{
-
-        @Override
-        protected void setup(Context context) throws IOException, InterruptedException {
-            Path[] myCacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
-            System.load(myCacheFiles[0].toUri().getPath());
-        }
+    public static class Img2Gray_opencvMapper extends OpenCVMapper<NullWritable, MatImageWritable, NullWritable, MatImageWritable> {
 
         @Override
         protected void map(NullWritable key, MatImageWritable value, Context context) throws IOException, InterruptedException {

@@ -39,7 +39,7 @@ public class Img2Gray_opencv {
 
     }
 
-    public static class Img2Gray_opencvMapper extends OpenCVMapper<NullWritable, MatImageWritable>{
+    public static class Img2Gray_opencvMapper extends OpenCVMapper<NullWritable, MatImageWritable, NullWritable, MatImageWritable>{
         protected void map(NullWritable key, MatImageWritable value, Context context) throws IOException, InterruptedException {
             Mat image = value.getImage();
             Mat result = new Mat(image.height(), image.width(), CvType.CV_8UC3);
