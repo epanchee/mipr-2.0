@@ -33,7 +33,7 @@
     <distributionManagement>
         <repository>
             <id>karamba.vm</id>
-            <url>scpexe://192.168.56.101/root/</url>
+            <url>scpexe://192.168.56.2/root/</url>
         </repository>
     </distributionManagement>
 

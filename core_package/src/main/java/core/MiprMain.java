@@ -13,10 +13,10 @@ import java.net.URI;
  */
 public class MiprMain {
 
-    public static final String workspace = "/user/u1220";
+    public static final String workspace = "/root";
 
     public static URI getOpenCVUri(){
-        return new Path(workspace + "/lib/libopencv_java2411.so").toUri();
+        return new Path(workspace + "/libopencv_java2411.so").toUri();
     }
 
     public static long getMaxSplitSize(){
@@ -25,6 +25,10 @@ public class MiprMain {
 
     public static Job getOpenCVJobTemplate() throws IOException {
         Configuration conf = new Configuration();
+        return getOpenCVJobTemplate(conf);
+    }
+
+    public static Job getOpenCVJobTemplate(Configuration conf) throws IOException {
         DistributedCache.addCacheFile(MiprMain.getOpenCVUri(), conf);
         Job job = new Job(conf);
         job.setNumReduceTasks(0);
